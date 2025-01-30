@@ -14,4 +14,18 @@ export default defineConfig({
       ],
     },
   },
+  server: {
+    port: 5173,
+    proxy: {
+      "/auth": "http://localhost:3000",
+      // "/login": "http://localhost:3000",
+      "/api": "http://localhost:3000",
+      "/auth/kakao": {
+        target: "http://localhost:3000", // ✅ 백엔드로 프록시
+        changeOrigin: true,
+        secure: false
+      }
+    }
+    
+  }
 });

@@ -1,31 +1,21 @@
-import React from 'react';
-import '../css/KakaoLoginBtn.css';
+import React from "react";
+import "../css/KakaoLoginBtn.css";
 
+const KAKAO_CLIENT_ID = "e1f580827a6c5e6b1a1fc6ae9f79a1c8";
+const KAKAO_REDIRECT_URI = "http://localhost:5173/auth/kakao"; // ✅ 수정됨
 
 const KakaoLoginBtn = () => {
-    const Rest_api_key = 'e1f580827a6c5e6b1a1fc6ae9f79a1c8'; // REST API KEY
-    const redirect_uri = 'http://localhost:5173/auth'; // Redirect URI
-
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-
     const handleLogin = () => {
-        const width = 500;  
-        const height = 600; 
-        const left = (window.innerWidth - width) / 2;
-        const top = (window.innerHeight - height) / 2;
+        const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
-        window.open(
-            kakaoURL,
-            'KakaoLogin',
-            `width=${width},height=${height},top=${top},left=${left},resizable=no`
-        );
+        console.log("📌 [Kakao] 로그인 URL:", kakaoURL); 
+        window.location.href = kakaoURL;
     };
 
     return (
-<button onClick={handleLogin} className="kakao-login-btn">
-    카카오 로그인
-</button>
-
+        <button onClick={handleLogin} className="kakao-login-btn">
+            카카오 로그인
+        </button>
     );
 };
 

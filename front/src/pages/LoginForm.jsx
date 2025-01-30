@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
-import KakaoLoginBtn from './KakaoLoginBtn';
-import GoogleLoginBtn from './GoogleLoginBtn';
-import '../css/LoginForm.css';
-// import '../css/GoogleLoginBtn.css';
-// import '../css/KakaoLoginBtn.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // ✅ 페이지 이동을 위해 추가
+import axios from "axios";
+import KakaoLoginBtn from "./KakaoLoginBtn";
+import GoogleLoginBtn from "./GoogleLoginBtn";
+import "../css/LoginForm.css";
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();  // ✅ 페이지 이동을 위한 훅
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Login Attempt:', { email, password });
+
+        try {
+            const response = await axios.post("http://localhost:3000/login", {
+                email,
+                password
+            });
+
+            console.log("✅ 로그인 성공:", response.data);
+            alert("로그인 성공!");
+
+            // ✅ JWT 토큰 저장 (로그인 유지)
+            localStorage.setItem("token", response.data.token);
+
+            // ✅ 로그인 성공 후 "/success" 페이지로 이동!
+            navigate("/success");
+        } catch (error) {
+            console.error("❌ 로그인 실패:", error.response?.data || error.message);
+            alert("로그인 실패: " + (error.response?.data?.message || "서버 오류"));
+        }
     };
 
     return (
